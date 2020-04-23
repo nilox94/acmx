@@ -14,7 +14,6 @@ export const ATTIC = 'attic';
  * Path to static folder.
  */
 export function pathToStatic() {
-    console.log(`${__filename}`);
     return join(dirname(dirname(__filename)), 'static');
 }
 
