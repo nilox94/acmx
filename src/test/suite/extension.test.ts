@@ -1,15 +1,29 @@
-import * as assert from 'assert';
+import * as assert from "assert";
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
+import * as vscode from "vscode";
+import tmp = require("tmp");
+import { newArena, ATTIC, TESTCASES } from "../../core";
+import { existsSync } from "fs";
+import { join } from "path";
+import { recursiveRemoveDirectory } from "../test_utils";
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+suite("Extension Test Suite", () => {
+    vscode.window.showInformationMessage("Start all tests.");
 
-	test('Sample test', () => {
-		assert.equal(-1, [1, 2, 3].indexOf(5));
-		assert.equal(-1, [1, 2, 3].indexOf(0));
-	});
+    test("New Arena", () => {
+        tmp.dir(function _tempDirCreated(err, path, cleanupCallback) {
+            if (err) {
+                throw err;
+            }
+
+            newArena(path);
+
+            assert.ok(existsSync(join(path, "sol.cpp")));
+            assert.ok(existsSync(join(path, ATTIC)));
+            assert.ok(existsSync(join(path, TESTCASES)));
+
+            recursiveRemoveDirectory(path);
+            cleanupCallback();
+        });
+    });
 });
