@@ -113,7 +113,11 @@ function createFolder(path: string) {
  *
  * @param testingPath Use for unit tests
  */
-export function globalAtticPath() {
+export function globalAtticPath(testPath: string | undefined = undefined) {
+    if (testPath !== undefined) {
+        return join(testPath, ATTIC);
+    }
+
     let path: string | undefined = vscode.workspace.getConfiguration('acmx.configuration', null).get('solutionPath');
     return join(path!, ATTIC);
 }
@@ -121,9 +125,9 @@ export function globalAtticPath() {
 /**
  * Create default environment that let acmX run properly
  */
-export function initAcmX() {
+export function initAcmX(testPath: string | undefined = undefined) {
     // Create global attic.
-    let globalAttic = globalAtticPath();
+    let globalAttic = globalAtticPath(testPath);
     createFolder(globalAttic);
 
     // Create checker folder

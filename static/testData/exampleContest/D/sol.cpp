@@ -1,29 +1,25 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
-#define endl '\n'
-
-typedef long long int64;
-typedef pair<int,int> pii;
-typedef vector<int> vi;
-
-const double eps = 1e-9;
-const int oo = 0x3f3f3f3f;
-const int mod = 1000000007;
-
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-
     int n; cin >> n;
-    int x = 0;
+    int y = 0;
 
-    for (int i = 0; i < n; i = min(i + 1, 0)){
-        x++;
+    for (int i = n; i <= 1000000000; ++i) {
+        int x = i;
+        int r = 0;
+        while (x > 1) {
+            if (x % 2 == 0)
+                x /= 2;
+            else
+                x = 3 * x + 1;
+            r++;
+        }
+        y += r;
     }
 
-    cout << x << endl;
+    cout << y << endl;
 
     return 0;
 }

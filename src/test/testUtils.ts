@@ -20,20 +20,9 @@ export function writeFile(path: string, content: string) {
 }
 
 export function runWithTemporaryPath(callback: (path: string) => void) {
-    tmp.dir(function _tempDirCreated(err, path, cleanupCallback) {
-        if (err) {
-            throw err;
-        }
-
-        callback(path);
-
-        try {
-            recursiveRemoveDirectory(path);
-            cleanupCallback();
-        } catch (err) {
-            console.log("Error cleaning folder:", path, err);
-        }
-    });
+    let path = tmp.dirSync();
+    callback(path.name);
+    recursiveRemoveDirectory(path.name);
 }
 
 export function runWithCopiedFolder(source: string, callback: (path: string) => void) {
