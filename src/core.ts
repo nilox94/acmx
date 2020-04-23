@@ -126,6 +126,7 @@ export function globalAtticPath(testPath: string | undefined = undefined) {
  * Create default environment that let acmX run properly
  */
 export function initAcmX(testPath: string | undefined = undefined) {
+    console.log(testPath);
     // Create global attic.
     let globalAttic = globalAtticPath(testPath);
     createFolder(globalAttic);
@@ -153,8 +154,12 @@ export function initAcmX(testPath: string | undefined = undefined) {
     if (!existsSync(join(checkerFolder, compiledName))) {
         let checkerPath = join(checkerFolder, checkerName);
         let compiledPath = join(checkerFolder, compiledName);
-
+        console.log(checkerPath, compiledPath);
         child_process.spawnSync("g++", ["-std=c++11", `${checkerPath}`, "-o", `${compiledPath}`]);
+    }
+
+    if (!existsSync(join(checkerFolder, compiledName))) {
+        throw new Error("compilation failed");
     }
 }
 
