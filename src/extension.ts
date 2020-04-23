@@ -325,7 +325,7 @@ async function debugTestCase(uriPath: vscode.Uri) {
     }
 
     let launchTaskData = readFileSync(launchTaskPath, "utf8");
-    // TODO(#41): Don't use regular expression to replace this. Use JSON parser instead.
+    // TODO(#20): Don't use regular expression to replace this. Use JSON parser instead.
     let newTaskData = launchTaskData.replace(/\"stdio\"\:.+/, `"stdio": ["\${fileDirname}/testcases/${testCaseName}"],`);
     let launchTaskFdW = openSync(launchTaskPath, 'w');
     writeSync(launchTaskFdW, newTaskData);

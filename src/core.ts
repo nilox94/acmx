@@ -212,7 +212,7 @@ export function upgradeArena(path: string) {
     let generator = join(path, 'gen.py');
 
     if (!existsSync(generator)) {
-        // TODO(#47): If generator already exist don't overwrite but log that it was not created.
+        // TODO(#21): If generator already exist don't overwrite but log that it was not created.
         gwen.create(path, generator);
     }
 
@@ -368,7 +368,7 @@ export function timedRun(path: string, tcName: string, timeout: number) {
 
     let spanTime = new Date().getTime() - startTime;
 
-    // TODO(#12)
+    // TODO(#13)
     // if (xresult.stderr.length > 0) {
     //     let stderrTer = stderrTerminal();
     //     let escaped_output = escape_double_ticks(xresult.stderr.toString());
@@ -430,7 +430,10 @@ export function compileCode(pathCode: string, pathOutput: string) {
     closeSync(codeMD5fd);
 
     let instruction: string | undefined = vscode.workspace.getConfiguration('acmx.execution', null).get('compile');
-    let splitedInstruction = instruction!.split(' ');
+    if (instruction === undefined || instruction === "") {
+        instruction = "g++ -std=c++17 $PROGRAM -o $OUTPUT";
+    }
+    let splitedInstruction = instruction.split(' ');
 
     for (let i = 0; i < splitedInstruction.length; ++i) {
         splitedInstruction[i] = splitedInstruction[i].replace('$PROGRAM', pathCode).replace('$OUTPUT', pathOutput);
@@ -441,7 +444,7 @@ export function compileCode(pathCode: string, pathOutput: string) {
 
     let result = child_process.spawnSync(program, args);
 
-    // TODO(#12)
+    // TODO(#13)
     // if (result.status !== 0) {
     //     // Write to the compile error terminal
     //     let ter = ceTerminal();
@@ -558,7 +561,7 @@ export function stressSolution(path: string, times: number) {
         let tcData = readFileSync(join(path, TESTCASES, 'gen.in'), "utf8");
 
         // Run without restrictions
-        // TODO(#36): Put time limit on all type of programs
+        // TODO(#25): Put time limit on all type of programs
         let runResult = child_process.spawnSync(brout, {
             input: tcData,
         });
