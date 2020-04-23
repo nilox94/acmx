@@ -4,7 +4,7 @@ import { closeSync, copyFileSync, existsSync, mkdirSync, openSync, readdirSync, 
 import { basename, dirname, extname, join } from "path";
 import * as vscode from 'vscode';
 import * as gwen from './gwen';
-import { Contest, Problem, SiteDescription, SolutionResult, TestcaseResult, Verdict } from "./types";
+import { Contest, Problem, SiteDescription, SolutionResult, TestCaseResult, Verdict } from "./types";
 import md5File = require('md5-file');
 
 export const TESTCASES = 'testcases';
@@ -375,10 +375,10 @@ export function timedRun(path: string, tcName: string, timeout: number) {
     // Check if an error happened
     if (xresult.status !== 0) {
         if (spanTime < timeout) {
-            return new TestcaseResult(Verdict.RTE);
+            return new TestCaseResult(Verdict.RTE);
         }
         else {
-            return new TestcaseResult(Verdict.TLE);
+            return new TestCaseResult(Verdict.TLE);
         }
     }
 
@@ -391,10 +391,10 @@ export function timedRun(path: string, tcName: string, timeout: number) {
     let checker_result = child_process.spawnSync(checker_path, [tcInput, tcCurrent, tcOutput]);
 
     if (checker_result.status !== 0) {
-        return new TestcaseResult(Verdict.WA);
+        return new TestCaseResult(Verdict.WA);
     }
     else {
-        return new TestcaseResult(Verdict.OK, spanTime);
+        return new TestCaseResult(Verdict.OK, spanTime);
     }
 }
 
@@ -482,7 +482,7 @@ export function testSolution(path: string) {
         testcasesId = testcasesId.reverse();
     }
 
-    let results: TestcaseResult[] = [];
+    let results: TestCaseResult[] = [];
     let fail: SolutionResult | undefined = undefined;
     testcasesId.forEach(tcId => {
         // Run while there none have failed already

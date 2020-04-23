@@ -5,6 +5,7 @@ import { newArena, ATTIC, TESTCASES, upgradeArena, pathToStatic, testCasesName, 
 import { existsSync, readdirSync } from "fs";
 import { join } from "path";
 import { runWithTemporaryPath, MOCK_SITE } from "../testUtils";
+// import { TestCaseResult, Verdict } from "../../types";
 
 const CONTEST = join(pathToStatic(), 'testData', 'exampleContest');
 
@@ -43,7 +44,6 @@ suite("Extension Test Suite", () => {
         }
     });
 
-
     test("Create new problem from id", function () {
         runWithTemporaryPath(async (path: string) => {
             let problemId = "mockProblem";
@@ -56,4 +56,11 @@ suite("Extension Test Suite", () => {
             assert.equal(readdirSync(join(problemPath, TESTCASES)).length, 6, "Incorrect number of files.");
         });
     });
+
+    // test("Create new problem from id", function () {
+    //     let problem = join(CONTEST, 'A');
+    //     let testCaseId = '0';
+    //     let result: TestCaseResult = timedRun(problem, testCaseId, 20);
+    //     assert.equal(result.status, Verdict.OK);
+    // });
 });

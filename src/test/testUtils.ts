@@ -26,8 +26,12 @@ export function runWithTemporaryPath(callback: (path: string) => void) {
 
         callback(path);
 
-        recursiveRemoveDirectory(path);
-        cleanupCallback();
+        try {
+            recursiveRemoveDirectory(path);
+            cleanupCallback();
+        } catch (err) {
+            console.log("Error cleaning folder:", path, err);
+        }
     });
 }
 

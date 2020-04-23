@@ -7,7 +7,7 @@ export enum Verdict {
     NO_TESTCASES,
 }
 
-export class TestcaseResult {
+export class TestCaseResult {
     status: Verdict;
     spanTime?: number;
 
