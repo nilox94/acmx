@@ -398,12 +398,12 @@ export function timedRun(path: string, tcName: string, timeout: number) {
     }
 }
 
-function escape_double_ticks(text: string) {
-    text = text.toString();
-    // text = text.replace('"', '\"');
-    console.log(text);
-    return text;
-}
+// function escape_double_ticks(text: string) {
+//     text = text.toString();
+//     // text = text.replace('"', '\"');
+//     console.log(text);
+//     return text;
+// }
 
 export function compileCode(pathCode: string, pathOutput: string) {
     let pathCodeMD5 = pathCode + '.md5';
