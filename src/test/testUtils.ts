@@ -1,4 +1,5 @@
 import { closeSync, existsSync, openSync, writeSync } from "fs";
+import tmp = require("tmp");
 import rimraf = require("rimraf");
 
 /**
@@ -14,4 +15,17 @@ export function writeFile(path: string, content: string) {
     let currentFd = openSync(path, "w");
     writeSync(currentFd, content);
     closeSync(currentFd);
+}
+
+export function runWithTemporaryPath(callback: (path: string) => void) {
+    tmp.dir(function _tempDirCreated(err, path, cleanupCallback) {
+        if (err) {
+            throw err;
+        }
+
+        callback(path);
+
+        recursiveRemoveDirectory(path);
+        cleanupCallback();
+    });
 }

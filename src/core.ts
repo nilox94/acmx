@@ -5,7 +5,7 @@ import { basename, dirname, extname, join } from "path";
 import * as vscode from 'vscode';
 import * as gwen from './gwen';
 import { Contest, Problem, SiteDescription, SolutionResult, TestcaseResult, Verdict } from "./types";
-const md5File = require('md5-file');
+import md5File = require('md5-file');
 
 export const TESTCASES = 'testcases';
 export const ATTIC = 'attic';
@@ -14,6 +14,7 @@ export const ATTIC = 'attic';
  * Path to static folder.
  */
 export function pathToStatic() {
+    console.log(`${__filename}`);
     return join(dirname(dirname(__filename)), 'static');
 }
 
@@ -187,7 +188,7 @@ export function removeExtension(name: string) {
     }
 }
 
-export function testcasesName(path: string) {
+export function testCasesName(path: string) {
     return readdirSync(join(path, TESTCASES)).
         filter(function (tcpath) {
             return extname(tcpath) === '.in';
@@ -464,7 +465,7 @@ export function testSolution(path: string) {
         throw new Error(`Compilation Error. ${sol}`);
     }
 
-    let testcasesId = testcasesName(path);
+    let testcasesId = testCasesName(path);
 
     if (testcasesId.length === 0) {
         return new SolutionResult(Verdict.NO_TESTCASES, undefined, undefined);

@@ -19,7 +19,7 @@
         "submit"
     ],
     "engines": {
-        "vscode": "^1.30.0"
+        "vscode": "^1.44.0"
     },
     "author": {
         "name": "Marcelo Fornet"
