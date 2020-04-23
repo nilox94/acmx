@@ -113,7 +113,7 @@ function createFolder(path: string) {
  *
  * @param testingPath Use for unit tests
  */
-function globalAtticPath(testingPath: string | undefined = undefined) {
+export function globalAtticPath() {
     let path: string | undefined = vscode.workspace.getConfiguration('acmx.configuration', null).get('solutionPath');
     return join(path!, ATTIC);
 }
@@ -265,8 +265,8 @@ function newProblem(path: string, problem: Problem, isWorkspace: boolean) {
     });
 }
 
-export async function newProblemFromId(path: string, site: SiteDescription, problemId: string) {
-    let problem = await site.problemParser(problemId);
+export function newProblemFromId(path: string, site: SiteDescription, problemId: string) {
+    let problem = site.problemParser(problemId);
 
     path = join(path, problem.identifier!);
 

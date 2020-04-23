@@ -2,6 +2,7 @@ import { closeSync, existsSync, openSync, writeSync } from "fs";
 import tmp = require("tmp");
 import rimraf = require("rimraf");
 import { SiteDescription, Problem, Contest } from "../types";
+import fse = require('fs-extra');
 
 /**
  * Recursive remove
@@ -35,12 +36,19 @@ export function runWithTemporaryPath(callback: (path: string) => void) {
     });
 }
 
+export function runWithCopiedFolder(source: string, callback: (path: string) => void) {
+    runWithTemporaryPath((destination: string) => {
+        fse.copySync(source, destination);
+        callback(destination);
+    });
+}
+
 export const MOCK_SITE = new SiteDescription(
     "personal",
     "Not a site. Custom problems and contest.",
     "Contest name",
     "Problem name",
-    async numProblems => {
+    numProblems => {
         let total = Number.parseInt(numProblems);
 
         let problems = [];
@@ -51,7 +59,7 @@ export const MOCK_SITE = new SiteDescription(
 
         return new Contest("MockSite", problems);
     },
-    async problemId => {
+    problemId => {
         return new Problem(problemId, problemId, ["0\n", "2\n", "9\n"], ["2\n", "4\n", "11\n"]);
     }
 );

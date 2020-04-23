@@ -1,10 +1,10 @@
 import * as assert from "assert";
 
 import * as vscode from "vscode";
-import { newArena, ATTIC, TESTCASES, upgradeArena, pathToStatic, testCasesName, newProblemFromId, timedRun, compileCode } from "../../core";
-import { existsSync, readdirSync } from "fs";
+import { newArena, ATTIC, TESTCASES, upgradeArena, pathToStatic, testCasesName, newProblemFromId, timedRun, compileCode, globalAtticPath } from "../../core";
+import { existsSync, readdirSync, copyFileSync } from "fs";
 import { join } from "path";
-import { runWithTemporaryPath, MOCK_SITE } from "../testUtils";
+import { runWithTemporaryPath, MOCK_SITE, runWithCopiedFolder } from "../testUtils";
 import { TestCaseResult, Verdict } from "../../types";
 
 const CONTEST = join(pathToStatic(), 'testData', 'exampleContest');
@@ -45,9 +45,9 @@ suite("Extension Test Suite", () => {
     });
 
     test("Create new problem from id", function () {
-        runWithTemporaryPath(async (path: string) => {
+        runWithTemporaryPath((path: string) => {
             let problemId = "mockProblem";
-            await newProblemFromId(path, MOCK_SITE, problemId);
+            newProblemFromId(path, MOCK_SITE, problemId);
             let problemPath = join(path, problemId);
             assert.ok(existsSync(problemPath));
             assert.ok(existsSync(join(problemPath, 'sol.cpp')));
@@ -57,12 +57,16 @@ suite("Extension Test Suite", () => {
         });
     });
 
-    test("Create new problem from id", function () {
+    test("Timed run", function () {
         this.timeout(20000);
         let problem = join(CONTEST, 'A');
-        let testCaseId = '0';
-        compileCode(join(problem, 'sol.cpp'), join(problem, ATTIC, 'sol.exe'));
-        let result: TestCaseResult = timedRun(problem, testCaseId, 20000);
-        assert.equal(result.status, Verdict.OK);
+
+        runWithCopiedFolder(problem, (path: string) => {
+            copyFileSync(join(globalAtticPath(), 'checkers', 'wcmp.exe'), join(path, ATTIC, 'checker.exe'));
+            let testCaseId = '0';
+            compileCode(join(path, 'sol.cpp'), join(path, ATTIC, 'sol.exe'));
+            let result: TestCaseResult = timedRun(path, testCaseId, 20000);
+            assert.equal(result.status, Verdict.OK);
+        });
     });
 });
