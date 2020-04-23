@@ -1,11 +1,11 @@
 import * as assert from "assert";
 
 import * as vscode from "vscode";
-import { newArena, ATTIC, TESTCASES, upgradeArena, pathToStatic, testCasesName, newProblemFromId } from "../../core";
+import { newArena, ATTIC, TESTCASES, upgradeArena, pathToStatic, testCasesName, newProblemFromId, timedRun, compileCode } from "../../core";
 import { existsSync, readdirSync } from "fs";
 import { join } from "path";
 import { runWithTemporaryPath, MOCK_SITE } from "../testUtils";
-// import { TestCaseResult, Verdict } from "../../types";
+import { TestCaseResult, Verdict } from "../../types";
 
 const CONTEST = join(pathToStatic(), 'testData', 'exampleContest');
 
@@ -57,10 +57,12 @@ suite("Extension Test Suite", () => {
         });
     });
 
-    // test("Create new problem from id", function () {
-    //     let problem = join(CONTEST, 'A');
-    //     let testCaseId = '0';
-    //     let result: TestCaseResult = timedRun(problem, testCaseId, 20);
-    //     assert.equal(result.status, Verdict.OK);
-    // });
+    test("Create new problem from id", function () {
+        this.timeout(20000);
+        let problem = join(CONTEST, 'A');
+        let testCaseId = '0';
+        compileCode(join(problem, 'sol.cpp'), join(problem, ATTIC, 'sol.exe'));
+        let result: TestCaseResult = timedRun(problem, testCaseId, 20000);
+        assert.equal(result.status, Verdict.OK);
+    });
 });
